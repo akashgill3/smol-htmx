@@ -28,3 +28,27 @@ i even need it?), also nvim-cmp wasn't working as intended either. Then I though
 'index.html' file that I'm using for testing so I created a simple http server with Bun. But it couldn't resolve the
 `smol-htmx.js` file in the script tag, I eventually found their experimental static/routes feature. Anyhow, I think I
 have everything setup now for tomorrow to start writing the actual code that matters.
+
+## 17-02-25
+
+### Making the basics work
+
+Firstly, we get all elements in the DOM that have any of the following tags:
+- `sx-get`
+- `sx-post`
+- `sx-put`
+- `sx-delete`
+
+Now, process them by getting relevant information like the target, swap strategy, and trigger
+out to make the basic request work. Then add eventListeners accordingly using fetch API
+in the handlers to construct calls.
+
+I forgot to clean up the elements after swap, which was causing multiple eventHandlers to be set.
+To solve this I decided to add `_sxHandlers` field to elements and store the attached handlers for
+easier clean up during processing Elements.
+
+Currently, even though we can make `Post`, and `Put` requests I haven't added any way to include data
+with the requests. Will need to implement something like `hx-vals`, `hx-params`, and `hx-include`.
+
+Also, only `innerHTML` and `outerHTML` swaps are supported. But adding adjacent swaps isn't that difficult,
+`insertAdjacentHTML` can handle remaining strategies.
