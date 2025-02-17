@@ -18,10 +18,10 @@ var smolHTMX = (() => {
 			verb: el.getAttribute("sx-get")
 				? "GET"
 				: el.getAttribute("sx-post")
-					? "POST"
-					: el.getAttribute("sx-put")
-						? "PUT"
-						: "DELETE",
+				? "POST"
+				: el.getAttribute("sx-put")
+				? "PUT"
+				: "DELETE",
 			url:
 				el.getAttribute("sx-get") ||
 				el.getAttribute("sx-post") ||
@@ -43,16 +43,10 @@ var smolHTMX = (() => {
 						},
 					});
 
-					if (!response.ok)
-						throw new Error(
-							`HTTP error! status: ${response.status}`
-						);
+					if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
 					const responseHtml = await response.text();
-					const targetEl =
-						attributes.target === "this"
-							? el
-							: document.querySelector(attributes.target);
+					const targetEl = attributes.target === "this" ? el : document.querySelector(attributes.target);
 
 					switch (attributes.swap) {
 						case "innerHTML":
@@ -62,9 +56,7 @@ var smolHTMX = (() => {
 							targetEl.outerHTML = responseHtml;
 							break;
 						default:
-							console.error(
-								`Unsupported swap: ${attributes.swap}`
-							);
+							console.error(`Unsupported swap: ${attributes.swap}`);
 					}
 
 					// Process new elements after swap
@@ -80,15 +72,10 @@ var smolHTMX = (() => {
 	};
 
 	const process = (root = document) => {
-		if (
-			root instanceof Element &&
-			root.matches("[sx-get], [sx-post], [sx-put], [sx-delete]")
-		) {
+		if (root instanceof Element && root.matches("[sx-get], [sx-post], [sx-put], [sx-delete]")) {
 			processElement(root);
 		}
-		root.querySelectorAll(
-			"[sx-get], [sx-post], [sx-put], [sx-delete]"
-		).forEach(processElement);
+		root.querySelectorAll("[sx-get], [sx-post], [sx-put], [sx-delete]").forEach(processElement);
 	};
 
 	// Public API
